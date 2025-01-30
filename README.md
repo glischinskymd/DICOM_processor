@@ -38,6 +38,7 @@ Parameters
 - Method: string, default=”Gaussian”. Options: “Gaussian”, “Median”.
 Returns a new list of arrays after applying denoising technique.
 
+
 save_image(pixel_arrays, output_folder): converts and saves pixel arrays to .png
 Parameters:
 - pixel_arrays: list of preprocessed images
