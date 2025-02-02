@@ -58,14 +58,12 @@ def resize_image(image_array, size, keep_ratio=False):
         return resized_image
     
 def denoise(array, method='Gaussian'):
-# Input: np pixel array. Applies denoising technique. Default='Gaussian', optional, 'Median'
-    images = []
-    for im in array:
-        if method == 'Gaussian':
-            images.append(cv2.GaussianBlur(im, (5, 5), 0))
-        elif method == 'Median':
-            images.append(cv2.medianBlur(im, 5))
-    return images
+# Input: path to .png image. Applies denoising technique. Default='Gaussian', optional, 'Median'
+    if method == 'Gaussian':
+        denoised_image =cv2.GaussianBlur(array, (5, 5), 0)
+    elif method == 'Median':
+        denoised_image =(cv2.medianBlur(array, 5))
+    return denoised_image
 
 def save_image(image_array, output_path):
 # Input: np pixel array and output folder path. Saves processed image as .png

@@ -12,7 +12,7 @@ pydicom.config.settings.reading_validation_mode = pydicom.config.IGNORE
 # Saves images as .png and metadata as .csv to specified output directory.
 # Merges train.csv dataframe from dataset with metadata from dicom files.
 
-def main(input_path, output_dir, train_path, is_folder, apply_resize, size, keep_ratio):
+def main(input_path, output_dir, train_path, is_folder, apply_resize, size, keep_ratio, apply_denoise, method):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -32,14 +32,17 @@ def main(input_path, output_dir, train_path, is_folder, apply_resize, size, keep
         processed_image = uf.process_image(file)
         
         if apply_resize:
-            resized_image = uf.resize_image(processed_image, size, keep_ratio)
-            if resized_image is not None:
-                output_path = os.path.join(output_dir, os.path.basename(file).replace('.dicom', '.png'))
-                uf.save_image(resized_image, output_path)
+            new_image = uf.resize_image(processed_image, size, keep_ratio)
+            if apply_denoise:
+                new_image = uf.denoise(new_image, method)
         else:
-            if processed_image is not None:
-                output_path = os.path.join(output_dir, os.path.basename(file).replace('.dicom', '.png'))
-                uf.save_image(processed_image, output_path)
+            new_image = processed_image
+            if apply_denoise:
+                new_image = uf.denoise(new_image, method)
+        
+        if new_image is not None:
+            output_path = os.path.join(output_dir, os.path.basename(file).replace('.dicom', '.png'))
+            uf.save_image(new_image, output_path)
 
     metadata_df = pd.DataFrame(metadata_list)
     train_df = pd.read_csv(train_path)
@@ -52,18 +55,9 @@ def main(input_path, output_dir, train_path, is_folder, apply_resize, size, keep
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="DICOM Image Processor")
-    parser.add_argument(
-        'input', 
-        help="Path to input file or folder"
-    )
-    parser.add_argument(
-        'output', 
-        help="Path to output folder"
-    )
-    parser.add_argument(
-        'train_path',
-        help="Path to train set metadata"
-    )
+    parser.add_argument('input', help="Path to input file or folder")
+    parser.add_argument('output', help="Path to output folder")
+    parser.add_argument('train_path', help="Path to train set metadata")
     parser.add_argument(
         '-f', '--is_folder', 
         action='store_true', 
@@ -85,6 +79,17 @@ if __name__ == "__main__":
         action='store_true', 
         help="Set this flag to keep ratio when resizing"
     )
+    parser.add_argument(
+        '-d', '--apply_denoise',
+        action='store_true',
+        help='Set this flag to apply denoise technique'
+    )
+    parser.add_argument(
+        '-m', '--method', 
+        type=str,
+        default='Gaussian',
+        help="Enter desired denoising method ('Gaussian', 'Median'), default Gaussian"
+    )
     args = parser.parse_args()
 
-    main(args.input, args.output, args.train_path, args.is_folder, args.apply_resize, args.size, args.keep_ratio)
+    main(args.input, args.output, args.train_path, args.is_folder, args.apply_resize, args.size, args.keep_ratio, args.apply_denoise, args.method)
