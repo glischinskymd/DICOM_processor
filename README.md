@@ -11,7 +11,7 @@ It's default output is the preprocessed images in their original size and a merg
 - train.csv path
 - '-f', '--is_folder'. Tag to identify input as a folder.
 - '-r', '--apply_resize'. Tag apply resize. If False, saves images in original size
-- '-s'. '--size'. Desired size in int. Default=256
+- '-s'. '--size'. Desired size in int. Default=224
 - '-k', '--keep_ratio'. Tag to maintain image ratio. Default=False.
 - '-d', '--apply_denoise'. Tag to apply a denoise technique. Default=False.
 - '-m', '--method'. Indicate denoise technique (Gaussian or Median). Default='Gaussian'
