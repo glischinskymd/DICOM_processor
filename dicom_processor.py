@@ -71,7 +71,7 @@ if __name__ == "__main__":
     parser.add_argument(
         '-s', '--size', 
         type=int,
-        default=256,
+        default=224,
         help="Enter desired size, default 256"
     )
     parser.add_argument(
