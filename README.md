@@ -48,3 +48,11 @@ In this file you will find the functions used in 'main'. It must be in the same 
 #### Parameters:
 - pixel_arrays: list of preprocessed images
 - output_folder: folder path to save images as .png
+
+# Bounding box application
+## bbox.py
+This file contains code for visualization of single images with all annotated bounding boxes. Requires preprocessed images in their original size, as well as the merged dataframe, both obtained from dicom_processor.py.
+### Imput:
+- Path to folder containing image
+- Single image name
+- Path to dataframe
