@@ -57,12 +57,12 @@ def resize_image(image_array, size, keep_ratio=False):
         resized_image = np.array(pil_image.resize((size, size)))
         return resized_image
     
-def denoise(array, method='Gaussian'):
+def denoise(array, method, ksize, sigmaX):
 # Input: path to .png image. Applies denoising technique. Default='Gaussian', optional, 'Median'
     if method == 'Gaussian':
-        denoised_image =cv2.GaussianBlur(array, (5, 5), 0)
+        denoised_image =cv2.GaussianBlur(array, (ksize, ksize), sigmaX)
     elif method == 'Median':
-        denoised_image =(cv2.medianBlur(array, 5))
+        denoised_image =(cv2.medianBlur(array, ksize))
     return denoised_image
 
 def save_image(image_array, output_path):
