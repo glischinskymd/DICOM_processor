@@ -15,6 +15,8 @@ It's default output is the preprocessed images in their original size and a merg
 - '-k', '--keep_ratio'. Tag to maintain image ratio. Default=False.
 - '-d', '--apply_denoise'. Tag to apply a denoise technique. Default=False.
 - '-m', '--method'. Indicate denoise technique (Gaussian or Median). Default='Gaussian'
+- '-ks', '--ksize'. Enter desired kernel size for denoise method, default 3. Must be 0 or odd integer.
+- '-sX', '--sigmaX'. Enter desired sigmaX value for denoise Gaussian, default = 1.
 
 ## Utility_functions.py
 In this file you will find the functions used in 'main'. It must be in the same repository for the main function in dicom_processor.py to run.
@@ -38,10 +40,12 @@ In this file you will find the functions used in 'main'. It must be in the same 
 - keep_ratio: bool, default=False. If true, maintains image ratios.
 - Returns a new list of arrays with images resized to the specified size.
 
-### denoise(array, Method='Gaussian'):
+### denoise(array, method, ksize, sigmaX):
 #### Parameters:
 - Image pixel array.
-- Method: string, default=”Gaussian”. Options: “Gaussian”, “Median”.
+- method: string, default=”Gaussian”. Options: “Gaussian”, “Median”.
+- ksize: kernel size. Must be positive and odd integer. Default = 3. If 0, calculated by sigmaX.
+- sigmaX: Gaussian kernel standard deviation in X direction. Standard = 1. If 0, must provide kernel size.
 - Returns a new list of arrays after applying denoising technique.
 
 ### save_image(pixel_arrays, output_folder): converts and saves pixel arrays to .png
